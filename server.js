@@ -9,7 +9,8 @@ const routes = [
   { recipient: 'sclead@aiaparse.indiveloper.com', url: '/backend/extract-lead' },
   { recipient: 'owlhome@aiaparse.indiveloper.com', url: '/backend/log-inbound-email' },
   { recipient: 'sclead@rndrparse.indiveloper.com', url: '/backend/extract-lead' },
-  { recipient: 'sclead@flyparse.indiveloper.com', url: '/backend/extract-lead' }
+  { recipient: 'sclead@flyparse.indiveloper.com', url: '/backend/extract-lead' },
+  { recipient: 'test@aiaparse.indiveloper.com', url: '/backend/test-endpoint' },
 ];
 
 console.log('Routes:', routes);
@@ -71,7 +72,14 @@ fastify.all('*', async (request, reply) => {
   console.log(`- To Email:`, request.body.to);
   console.log(`- Body:`, request.body);
 
-  const routePath = routes.find(r => r.recipient === request.body.to).url || '/no-route';
+  const routePath = routes.find(r => r.recipient === request.body.to)?.url
+  if( !routePath ) {
+    console.log('No route found for recipient:', request.body.to);
+    return reply
+      .code(404)
+      .send({ error: `No route found for recipient ${request.body.to}` });
+  }
+  console.log(`- Route Path found for ${request.body.to}: ${routePath}`);
   
   try {
     console.log('Sending request to:', targetUrl + routePath);
