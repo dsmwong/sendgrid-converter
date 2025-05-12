@@ -1,0 +1,7 @@
+# node_modules and environment files
+node_modules
+.env
+
+# VS Code
+settings.json
+.vscode
