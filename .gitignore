@@ -5,3 +5,6 @@ node_modules
 # VS Code
 settings.json
 .vscode
+
+# Local Test Stub
+twilio-functions-stub

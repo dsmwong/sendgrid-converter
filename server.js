@@ -6,10 +6,10 @@ const axios = require('axios');
 
 // Routing Configuration
 const routes = [
-  { recipient: 'sclead@aiaparse.indiveloper.com', url: '/backend/extract-lead' },
+  { recipient: 'sclead@aiaparse.indiveloper.com', url: 'https://nmogil-tw-ai-assistants-lead-gen-4977-dev.twil.io/backend/extract-lead' },
   { recipient: 'owlhome@aiaparse.indiveloper.com', url: '/backend/log-inbound-email' },
   { recipient: 'sclead@rndrparse.indiveloper.com', url: '/backend/extract-lead' },
-  { recipient: 'sclead@flyparse.indiveloper.com', url: '/backend/extract-lead' },
+  { recipient: 'sclead@flyparse.indiveloper.com', url: 'https://nmogil-tw-ai-assistants-lead-gen-4977-dev.twil.io/backend/extract-lead' },
   { recipient: 'test@aiaparse.indiveloper.com', url: '/backend/test-endpoint' },
 ];
 
@@ -61,16 +61,8 @@ fastify.addHook('preHandler', async (request, reply) => {
 fastify.all('*', async (request, reply) => {
   const verb = request.method.toLowerCase();
   const route = request.url;
-  const targetUrl = `${FORWARD_TO_BASE}`;
+  let targetUrl = `${FORWARD_TO_BASE}`;
 
-  console.log(`\nForwarding request:`);
-  console.log(`- From: ${request.url}`);
-  console.log(`- To: ${targetUrl}`);
-  console.log(`- Method: ${verb.toUpperCase()}`);
-
-  console.log(`- Headers:`, request.headers);
-  console.log(`- To Email:`, request.body.to);
-  console.log(`- Body:`, request.body);
 
   const routePath = routes.find(r => r.recipient === request.body.to)?.url
   if( !routePath ) {
@@ -80,9 +72,21 @@ fastify.all('*', async (request, reply) => {
       .send({ error: `No route found for recipient ${request.body.to}` });
   }
   console.log(`- Route Path found for ${request.body.to}: ${routePath}`);
-  
+  if( routePath.startsWith('https://') ) {  // ignore the base url if the routePath is a full URL
+      targetUrl = '';      
+  }
+  console.log(`\nForwarding request:`);
+  console.log(`- From: ${request.url}`);
+  console.log(`- To: base[${targetUrl}] route[${routePath}]`);
+  console.log(`- Method: ${verb.toUpperCase()}`);
+
+  console.log(`- Headers:`, request.headers);
+  console.log(`- From Email:`, request.body.from);
+  console.log(`- To Email:`, request.body.to);
+  console.log(`- Subject:`, request.body.subject);
+  console.log(`- Body:`, request.body);
+
   try {
-    console.log('Sending request to:', targetUrl + routePath);
     const proxyResponse = await axios({
       method: verb,
       url: targetUrl + routePath,
