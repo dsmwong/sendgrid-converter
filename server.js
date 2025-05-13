@@ -11,6 +11,7 @@ const routes = [
   { recipient: 'sclead@rndrparse.indiveloper.com', url: '/backend/extract-lead' },
   { recipient: 'sclead@flyparse.indiveloper.com', url: 'https://nmogil-tw-ai-assistants-lead-gen-4977-dev.twil.io/backend/extract-lead' },
   { recipient: 'test@aiaparse.indiveloper.com', url: '/backend/test-endpoint' },
+  { recipient: 'test@devparse.indiveloper.com', url: '/backend/test-endpoint' }
 ];
 
 console.log('Routes:', routes);
