@@ -60,6 +60,18 @@ twilio serverless:start --ngrok <your-ngrok-profile>
 
 This starts the local server and opens your ngrok tunnel in one command. Set `FUNCTIONS_DOMAIN` in the root `.env` (or in `fly.toml` for the deployed proxy) to your ngrok hostname.
 
+## Email provider (`assets/providers/email/sendgrid.private.js`)
+
+`SendGridProvider` is a Twilio Functions asset available to all backend functions via `Runtime.getAssets()`. It wraps the `@sendgrid/mail` SDK and provides three methods:
+
+- **`send(to, body, subject, options)`** — sends an outbound email. Accepts an optional `lastMessageId` in `options` to thread the reply by setting `In-Reply-To` and `References` headers and prefixing the subject with `Re:`. Also handles Twilio identity strings in the format `email:user@example.com`.
+
+- **`parseInbound(payload)`** — parses a SendGrid inbound webhook payload (as forwarded by this proxy) into a structured object: `{ messageId, fromName, fromEmail, toEmail, text, html, subject, headers, threadData: { references, inReplyTo } }`.
+
+- **`getThreadId(messageData)`** — returns the thread ID from parsed message data, preferring `References` over `In-Reply-To`, falling back to `messageId`.
+
+Requires `SENDGRID_API_KEY` and `SENDER_EMAIL` in the environment.
+
 ## Deployment (Fly.io)
 
 ```bash
