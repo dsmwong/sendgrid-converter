@@ -64,5 +64,5 @@ To run the stub locally:
 ```bash
 cd twilio-functions-stub
 npm install
-npm start  # starts twilio-run on default port
+twilio serverless:start --ngrok dawong
 ```

@@ -7,4 +7,6 @@ settings.json
 .vscode
 
 # Local Test Stub
-twilio-functions-stub
+twilio-functions-stub/.env
+twilio-functions-stub/node_modules
+twilio-functions-stub/package-lock.json
