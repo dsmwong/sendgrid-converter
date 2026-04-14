@@ -5,13 +5,11 @@ const multipart = require('@fastify/multipart');
 const axios = require('axios');
 
 // Routing Configuration
+// Maps recipient email addresses to Twilio Functions paths or full URLs.
+// Relative paths are appended to FUNCTIONS_DOMAIN; full https:// URLs are used as-is.
 const routes = [
-  { recipient: 'sclead@aiaparse.indiveloper.com', url: 'https://nmogil-tw-ai-assistants-lead-gen-4977-dev.twil.io/backend/extract-lead' },
-  { recipient: 'owlhome@aiaparse.indiveloper.com', url: '/backend/log-inbound-email' },
-  { recipient: 'sclead@rndrparse.indiveloper.com', url: '/backend/extract-lead' },
-  { recipient: 'sclead@flyparse.indiveloper.com', url: 'https://nmogil-tw-ai-assistants-lead-gen-4977-dev.twil.io/backend/extract-lead' },
-  { recipient: 'test@aiaparse.indiveloper.com', url: '/backend/test-endpoint' },
-  { recipient: 'test@devparse.indiveloper.com', url: '/backend/test-endpoint' }
+  { recipient: 'you@yourdomain.com', url: '/backend/your-function' },
+  { recipient: 'test@yourdomain.com', url: '/backend/test-endpoint' }
 ];
 
 console.log('Routes:', routes);

@@ -9,7 +9,7 @@ primary_region = 'syd'
 [build]
 
 [env]
-  FUNCTIONS_DOMAIN = 'dawong.au.ngrok.io'
+  FUNCTIONS_DOMAIN = 'your-functions-domain.twil.io'
 
 [http_service]
   internal_port = 3000

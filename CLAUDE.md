@@ -64,5 +64,5 @@ To run the stub locally:
 ```bash
 cd twilio-functions-stub
 npm install
-twilio serverless:start --ngrok dawong
+twilio serverless:start --ngrok <your-ngrok-profile>
 ```

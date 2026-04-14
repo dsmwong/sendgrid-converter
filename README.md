@@ -55,10 +55,10 @@ Start the local functions server with ngrok from the `twilio-functions-stub/` di
 
 ```bash
 cd twilio-functions-stub
-twilio serverless:start --ngrok dawong
+twilio serverless:start --ngrok <your-ngrok-profile>
 ```
 
-This starts the local server and opens the `dawong` ngrok tunnel in one command. Set `FUNCTIONS_DOMAIN` in the root `.env` (or in `fly.toml` for the deployed proxy) to your ngrok hostname.
+This starts the local server and opens your ngrok tunnel in one command. Set `FUNCTIONS_DOMAIN` in the root `.env` (or in `fly.toml` for the deployed proxy) to your ngrok hostname.
 
 ## Deployment (Fly.io)
 
@@ -74,13 +74,13 @@ The app is configured for the `syd` region with auto-start/stop machines. Update
 Send a simulated SendGrid inbound webhook:
 
 ```bash
-curl -X POST https://sendgrid-converter.fly.dev/ \
+curl -X POST https://<your-app>.fly.dev/ \
   -H "User-Agent: Sendlib/1.0" \
-  -F "to=test@devparse.indiveloper.com" \
+  -F "to=test@yourdomain.com" \
   -F "from=Your Name <you@example.com>" \
   -F "subject=Test Email" \
   -F "text=Hello, this is a test." \
   -F "headers=Message-ID: <msg-001@example.com>
 From: Your Name <you@example.com>
-To: test@devparse.indiveloper.com"
+To: test@yourdomain.com"
 ```
