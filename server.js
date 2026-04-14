@@ -114,16 +114,21 @@ fastify.all('*', async (request, reply) => {
       .headers(proxyResponse.headers)
       .send(proxyResponse.data);
   } catch (error) {
+    const forwardUrl = targetUrl + routePath;
     console.error('\nError forwarding request:');
+    console.error('Recipient:', request.body.to);
+    console.error('Target URL:', forwardUrl);
     console.error('Message:', error.message);
     if (error.response) {
       console.error('Status:', error.response.status);
       console.error('Data:', error.response.data);
     }
-    
+
     const status = error.response?.status || 500;
     const errorResponse = {
       error: true,
+      recipient: request.body.to,
+      targetUrl: forwardUrl,
       message: error.message,
       details: error.response?.data
     };
