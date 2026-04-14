@@ -60,6 +60,36 @@ twilio serverless:start --ngrok <your-ngrok-profile>
 
 This starts the local server and opens your ngrok tunnel in one command. Set `FUNCTIONS_DOMAIN` in the root `.env` (or in `fly.toml` for the deployed proxy) to your ngrok hostname.
 
+## SendGrid Inbound Parse setup
+
+To route inbound emails through this proxy:
+
+**1. Add an MX record to your domain**
+
+For the subdomain you want to receive email on (e.g. `parse.yourdomain.com`), add an MX record pointing to SendGrid:
+
+| Type | Host | Value | Priority |
+|------|------|-------|----------|
+| MX | `parse.yourdomain.com` | `mx.sendgrid.net` | 10 |
+
+**2. Configure Inbound Parse in SendGrid**
+
+In the SendGrid dashboard go to **Settings → Inbound Parse → Add Host & URL**:
+
+- **Receiving Domain**: the subdomain you added the MX record to (e.g. `parse.yourdomain.com`)
+- **Destination URL**: your deployed proxy URL (e.g. `https://your-app.fly.dev/`)
+- Leave **POST the raw, full MIME message** unchecked — the proxy expects the default form-encoded payload
+
+**3. Add routes in `routes.local.js`**
+
+Add an entry for each recipient address you want to handle:
+
+```js
+{ recipient: 'you@parse.yourdomain.com', url: '/backend/your-function' }
+```
+
+Any email sent to `you@parse.yourdomain.com` will be forwarded as JSON to the mapped Twilio Function.
+
 ## Email provider (`assets/providers/email/sendgrid.private.js`)
 
 `SendGridProvider` is a Twilio Functions asset available to all backend functions via `Runtime.getAssets()`. It wraps the `@sendgrid/mail` SDK and provides three methods:
